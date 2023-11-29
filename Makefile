@@ -600,3 +600,11 @@ kind-cluster: ## Create a new kind cluster designed for development with Tilt
 
 go-version: ## Print the go version we use to compile our binaries and images
 	@echo $(GO_VERSION)
+
+## --------------------------------------
+## Documentation and Publishing
+## --------------------------------------
+
+.PHONY: serve
+serve: ## Build the CAPIBM book and serve it locally to validate changes in documentation.
+	make -C docs/book/ serve
