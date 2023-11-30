@@ -608,3 +608,13 @@ go-version: ## Print the go version we use to compile our binaries and images
 .PHONY: serve
 serve: ## Build the CAPIBM book and serve it locally to validate changes in documentation.
 	make -C docs/book/ serve
+
+## --------------------------------------
+## Update Go Version
+## --------------------------------------
+
+.PHONY: update-go
+update-go: ## Update Go version across files - Usage make update-version VERSION=X.YY.ZZ
+	sed -i '' "s/GO_VERSION ?= [[:digit:]].[[:digit:]]\{1,\}.[[:digit:]]\{1,\}/GO_VERSION ?= ${VERSION}/" Makefile
+	sed -i '' "s/FROM golang\:[[:digit:]].[[:digit:]]\{1,\}.[[:digit:]]\{1,\} AS ccm-builder/FROM golang\:$(VERSION) AS ccm-builder/" hack/ccm/Dockerfile
+	sed -i '' "s/FROM --platform=\$${BUILDPLATFORM\} golang\:[[:digit:]].[[:digit:]]\{1,\}.[[:digit:]]\{1,\} as toolchain/FROM --platform=\$${BUILDPLATFORM\} golang\:${VERSION} as toolchain/" Dockerfile
