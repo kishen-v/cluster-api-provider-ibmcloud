@@ -539,6 +539,17 @@ verify-security: ## Verify code and images for vulnerabilities
 		exit 1; \
 	fi
 
+.PHONY: verify-cntr
+verify-cntr: ## run security checks inside container
+	docker run \
+		--rm \
+		--mount=source=gocache,target=/go/pkg/mod \
+		--mount=source=gocache,target=/root/.cache/go-build \
+		-v "$$(pwd):/workspace" \
+		-w /workspace \
+		$(TOOLCHAIN_IMAGE) \
+		make verify-security
+
 ## --------------------------------------
 ## Cleanup / Verification
 ## --------------------------------------
