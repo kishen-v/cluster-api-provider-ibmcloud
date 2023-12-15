@@ -25,6 +25,8 @@ IMG ?= controller:latest
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:crdVersions=v1"
 
+SHELL=/bin/bash
+
 # Directories.
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
 ARTIFACTS ?= $(REPO_ROOT)/_artifacts
@@ -483,7 +485,7 @@ define checkdiff
 	git --no-pager diff --name-only FETCH_HEAD
 endef
 
-ALL_VERIFY_CHECKS = boilerplate shellcheck modules gen conversions
+ALL_VERIFY_CHECKS = boilerplate shellcheck modules gen conversions go-version
 
 .PHONY: verify
 verify: $(addprefix verify-,$(ALL_VERIFY_CHECKS)) ## Run all verify-* targets
@@ -537,6 +539,26 @@ verify-security: ## Verify code and images for vulnerabilities
 	if [ "$$R1" -ne "0" ] || [ "$$R2" -ne "0" ]; then \
 	  echo "Check for vulnerabilities failed! There are vulnerabilities to be fixed"; \
 		exit 1; \
+	fi
+
+.SILENT:
+.PHONY: verify-go-version
+verify-go-version: ## Confirms the availability of minor/patch release.
+	available_version=$$(curl -s "https://go.dev/dl/?mode=json" | jq ".[1].version" | tr -d '"'); \
+	avl_minor_patch_version=$$(echo $$available_version | awk -F'.' '{print $$(NF-1),$$(NF)}'); \
+	IFS=' ' read -r available_minor available_patch <<< "$$avl_minor_patch_version"; \
+	current_minor_patch_version=$$(echo $(GO_VERSION)| awk -F'.' '{print $$(NF-1),$$(NF)}'); \
+	IFS=' ' read -r current_minor current_patch <<< "$$current_minor_patch_version"; \
+	if [ $$current_minor -le $$available_minor ]; then \
+		if [ $$current_patch -lt $$available_patch ] || [ $$current_minor -lt $$available_minor ]; then \
+			echo "::warning ::Update GO_VERSION to $$available_version"; \
+			echo "$$available_version is available on go.dev, the version in Makefile is $(GO_VERSION)".; \
+			echo "Consider bumping the version, run make update-go VERSION=$$available_version to update across all files."; \
+		else \
+			echo "Golang version is up to date."; \
+		fi \
+	else \
+		echo "Golang version is up to date."; \
 	fi
 
 ## --------------------------------------
@@ -607,7 +629,7 @@ go-version: ## Print the go version we use to compile our binaries and images
 
 .PHONY: serve
 serve: ## Build the CAPIBM book and serve it locally to validate changes in documentation.
-	make -C docs/book/ serve
+	$(MAKE) -C docs/book/ serve
 
 ## --------------------------------------
 ## Update Go Version
