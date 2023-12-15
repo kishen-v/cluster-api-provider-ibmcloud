@@ -1,0 +1,15 @@
+name: Check for recent Go releases.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:  
+    - uses: actions/checkout@v4
+    - name: Verify Go version
+      run: make verify-go-version
