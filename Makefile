@@ -56,7 +56,7 @@ STAGING_BUCKET ?= artifacts.k8s-staging-capi-ibmcloud.appspot.com
 BUCKET ?= $(STAGING_BUCKET)
 PROD_REGISTRY := registry.k8s.io/capi-ibmcloud
 REGISTRY ?= $(STAGING_REGISTRY)
-RELEASE_TAG ?= $(shell git describe --abbrev=0 2>/dev/null)
+RELEASE_TAG ?= $(shell git describe --abbrev=0 --always 2>/dev/null )
 PULL_BASE_REF ?= $(RELEASE_TAG) # PULL_BASE_REF will be provided by Prow
 RELEASE_ALIAS_TAG ?= $(PULL_BASE_REF)
 RELEASE_DIR := out
