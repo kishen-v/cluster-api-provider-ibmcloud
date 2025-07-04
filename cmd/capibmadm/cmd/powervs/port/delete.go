@@ -28,7 +28,7 @@ import (
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/clients/iam"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/clients/powervs"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/options"
-	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
+	pkgUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
 )
 
 type portDeleteOptions struct {
@@ -62,7 +62,7 @@ capibmadm powervs port delete --port-id <port-id> --network <network-name/networ
 func deletePort(ctx context.Context, portDeleteOption portDeleteOptions) error {
 	log := logf.Log
 	log.Info("Deleting PowerVS network port", "network", portDeleteOption.network, "service-instance-id", options.GlobalOptions.ServiceInstanceID, "port-id", portDeleteOption.portID)
-	accountID, err := utils.GetAccount(iam.GetIAMAuth())
+	accountID, err := pkgUtils.GetAccount(iam.GetIAMAuth())
 	if err != nil {
 		return err
 	}

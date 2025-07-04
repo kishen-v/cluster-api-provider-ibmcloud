@@ -32,7 +32,7 @@ import (
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/clients/powervs"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/options"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/printer"
-	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/utils"
+	cliUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/utils"
 	pkgUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
 )
 
@@ -100,12 +100,12 @@ func createPort(ctx context.Context, portCreateOption portCreateOptions) error {
 	}
 
 	portInfo.Items = append(portInfo.Items, PSpec{
-		Description: utils.DereferencePointer(port.Description).(string),
+		Description: cliUtils.DereferencePointer(port.Description).(string),
 		ExternalIP:  port.ExternalIP,
-		IPAddress:   utils.DereferencePointer(port.IPAddress).(string),
-		MacAddress:  utils.DereferencePointer(port.MacAddress).(string),
-		PortID:      utils.DereferencePointer(port.PortID).(string),
-		Status:      utils.DereferencePointer(port.Status).(string),
+		IPAddress:   cliUtils.DereferencePointer(port.IPAddress).(string),
+		MacAddress:  cliUtils.DereferencePointer(port.MacAddress).(string),
+		PortID:      cliUtils.DereferencePointer(port.PortID).(string),
+		Status:      cliUtils.DereferencePointer(port.Status).(string),
 	})
 
 	printerObj, err := printer.New(options.GlobalOptions.Output, os.Stdout)

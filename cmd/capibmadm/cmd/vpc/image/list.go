@@ -29,7 +29,7 @@ import (
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/clients/vpc"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/options"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/printer"
-	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/utils"
+	cliUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/utils"
 	pkgUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
 )
 
@@ -66,7 +66,7 @@ func listImages(ctx context.Context, resourceGroupName string) error {
 
 	var resourceGroupID string
 	if resourceGroupName != "" {
-		resourceGroupID, err = utils.GetResourceGroupID(ctx, resourceGroupName, accountID)
+		resourceGroupID, err = cliUtils.GetResourceGroupID(ctx, resourceGroupName, accountID)
 		if err != nil {
 			return err
 		}
@@ -108,34 +108,34 @@ func display(imageNesList []*vpcv1.ImageCollection) error {
 	for _, imageL := range imageNesList {
 		for _, image := range imageL.Images {
 			imageToAppend := Image{
-				ID:         utils.DereferencePointer(image.ID).(string),
-				Name:       utils.DereferencePointer(image.Name).(string),
-				Status:     utils.DereferencePointer(image.Status).(string),
-				CreatedAt:  utils.DereferencePointer(image.CreatedAt).(strfmt.DateTime),
-				Visibility: utils.DereferencePointer(image.Visibility).(string),
-				Encryption: utils.DereferencePointer(image.Encryption).(string),
+				ID:         cliUtils.DereferencePointer(image.ID).(string),
+				Name:       cliUtils.DereferencePointer(image.Name).(string),
+				Status:     cliUtils.DereferencePointer(image.Status).(string),
+				CreatedAt:  cliUtils.DereferencePointer(image.CreatedAt).(strfmt.DateTime),
+				Visibility: cliUtils.DereferencePointer(image.Visibility).(string),
+				Encryption: cliUtils.DereferencePointer(image.Encryption).(string),
 			}
 
 			if image.File != nil {
-				imageToAppend.FileSize = utils.DereferencePointer(image.File.Size).(int64)
+				imageToAppend.FileSize = cliUtils.DereferencePointer(image.File.Size).(int64)
 			}
 
 			if image.ResourceGroup != nil {
-				imageToAppend.ResourceGroupName = utils.DereferencePointer(image.ResourceGroup.Name).(string)
+				imageToAppend.ResourceGroupName = cliUtils.DereferencePointer(image.ResourceGroup.Name).(string)
 			}
 
 			if image.OperatingSystem != nil {
-				imageToAppend.OperatingSystemName = utils.DereferencePointer(image.OperatingSystem.DisplayName).(string)
-				imageToAppend.OperatingSystemVersion = utils.DereferencePointer(image.OperatingSystem.Version).(string)
-				imageToAppend.Arch = utils.DereferencePointer(image.OperatingSystem.Architecture).(string)
+				imageToAppend.OperatingSystemName = cliUtils.DereferencePointer(image.OperatingSystem.DisplayName).(string)
+				imageToAppend.OperatingSystemVersion = cliUtils.DereferencePointer(image.OperatingSystem.Version).(string)
+				imageToAppend.Arch = cliUtils.DereferencePointer(image.OperatingSystem.Architecture).(string)
 			}
 
 			if image.SourceVolume != nil {
-				imageToAppend.SourceVolumeName = utils.DereferencePointer(image.SourceVolume.Name).(string)
+				imageToAppend.SourceVolumeName = cliUtils.DereferencePointer(image.SourceVolume.Name).(string)
 			}
 
 			if image.CatalogOffering != nil {
-				imageToAppend.CatalogOffering = utils.DereferencePointer(image.CatalogOffering.Managed).(bool)
+				imageToAppend.CatalogOffering = cliUtils.DereferencePointer(image.CatalogOffering.Managed).(bool)
 			}
 
 			imageListToDisplay = append(imageListToDisplay, imageToAppend)

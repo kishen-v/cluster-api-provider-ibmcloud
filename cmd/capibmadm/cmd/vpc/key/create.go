@@ -31,7 +31,7 @@ import (
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/clients/iam"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/clients/vpc"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/options"
-	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/utils"
+	cliUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/utils"
 	pkgUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
 )
 
@@ -104,7 +104,7 @@ func createKey(ctx context.Context, keyCreateOption keyCreateOptions) error {
 	options.SetPublicKey(keyCreateOption.publicKey)
 
 	if keyCreateOption.resourceGroupName != "" {
-		resourceGroupID, err := utils.GetResourceGroupID(ctx, keyCreateOption.resourceGroupName, accountID)
+		resourceGroupID, err := cliUtils.GetResourceGroupID(ctx, keyCreateOption.resourceGroupName, accountID)
 		if err != nil {
 			return err
 		}

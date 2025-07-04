@@ -55,7 +55,7 @@ import (
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/resourcecontroller"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/resourcemanager"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/transitgateway"
-	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
+	pkgUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/vpc"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/endpoints"
 	genUtil "sigs.k8s.io/cluster-api-provider-ibmcloud/util"
@@ -840,7 +840,7 @@ func (s *PowerVSClusterScope) isServiceInstanceExists(ctx context.Context) (stri
 
 // getServiceInstance return resource instance by name.
 func (s *PowerVSClusterScope) getServiceInstance() (*resourcecontrollerv2.ResourceInstance, error) {
-	//TODO: Support regular expression
+	// TODO: Support regular expression
 	return s.ResourceClient.GetServiceInstance("", *s.GetServiceName(infrav1.ResourceTypeServiceInstance), s.IBMPowerVSCluster.Spec.Zone)
 }
 
@@ -2419,7 +2419,7 @@ func (s *PowerVSClusterScope) fetchResourceGroupID() (string, error) {
 		return "", err
 	}
 
-	account, err := utils.GetAccount(auth)
+	account, err := pkgUtils.GetAccount(auth)
 	if err != nil {
 		return "", err
 	}

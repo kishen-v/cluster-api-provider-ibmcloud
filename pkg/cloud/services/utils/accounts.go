@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package utils
+package serviceutils
 
 import (
 	"context"
 	"net/http"
 	"strings"
 
-	jwt "github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/IBM/go-sdk-core/v5/core"
 

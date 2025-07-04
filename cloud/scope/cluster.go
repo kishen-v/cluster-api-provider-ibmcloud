@@ -34,7 +34,7 @@ import (
 	v1beta1patch "sigs.k8s.io/cluster-api/util/deprecated/v1beta1/patch" //nolint:staticcheck
 
 	infrav1 "sigs.k8s.io/cluster-api-provider-ibmcloud/api/v1beta2"
-	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
+	pkgUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/vpc"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/endpoints"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/record"
@@ -180,7 +180,7 @@ func (s *ClusterScope) ensureVPCUnique(vpcName string) (*vpcv1.VPC, error) {
 		return true, "", nil
 	}
 
-	if err := utils.PagingHelper(f); err != nil {
+	if err := pkgUtils.PagingHelper(f); err != nil {
 		return nil, err
 	}
 
@@ -285,7 +285,7 @@ func (s *ClusterScope) getSubnetAddrPrefix(vpcID, zone string) (string, error) {
 		return true, "", nil
 	}
 
-	if err := utils.PagingHelper(f); err != nil {
+	if err := pkgUtils.PagingHelper(f); err != nil {
 		return "", err
 	}
 
@@ -326,7 +326,7 @@ func (s *ClusterScope) ensureSubnetUnique(subnetName string) (*vpcv1.Subnet, err
 		return true, "", nil
 	}
 
-	if err := utils.PagingHelper(f); err != nil {
+	if err := pkgUtils.PagingHelper(f); err != nil {
 		return nil, err
 	}
 
@@ -372,7 +372,7 @@ func (s *ClusterScope) DeleteSubnet() error {
 		return true, "", nil
 	}
 
-	if err := utils.PagingHelper(f); err != nil {
+	if err := pkgUtils.PagingHelper(f); err != nil {
 		return err
 	}
 
@@ -554,7 +554,7 @@ func (s *ClusterScope) getLoadBalancerByHostname(loadBalancerHostname string) (*
 		return true, "", nil
 	}
 
-	if err := utils.PagingHelper(f); err != nil {
+	if err := pkgUtils.PagingHelper(f); err != nil {
 		return nil, err
 	}
 
@@ -592,7 +592,7 @@ func (s *ClusterScope) ensureLoadBalancerUnique(loadBalancerName string) (*vpcv1
 		return true, "", nil
 	}
 
-	if err := utils.PagingHelper(f); err != nil {
+	if err := pkgUtils.PagingHelper(f); err != nil {
 		return nil, err
 	}
 
@@ -640,7 +640,7 @@ func (s *ClusterScope) DeleteLoadBalancer() (bool, error) {
 			return true, "", nil
 		}
 
-		if err := utils.PagingHelper(f); err != nil {
+		if err := pkgUtils.PagingHelper(f); err != nil {
 			return false, err
 		}
 	}

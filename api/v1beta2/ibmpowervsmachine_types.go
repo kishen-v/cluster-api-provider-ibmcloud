@@ -292,7 +292,7 @@ func (r *IBMPowerVSMachine) SetV1Beta2Conditions(conditions []metav1.Condition) 
 	r.Status.V1Beta2.Conditions = conditions
 }
 
-//+kubebuilder:object:root=true
+// +kubebuilder:object:root=true
 
 // IBMPowerVSMachineList contains a list of IBMPowerVSMachine.
 type IBMPowerVSMachineList struct {

@@ -41,7 +41,7 @@ import (
 	infrav1 "sigs.k8s.io/cluster-api-provider-ibmcloud/api/v1beta2"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/authenticator"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/globaltagging"
-	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
+	pkgUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/vpc"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/endpoints"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/options"
@@ -140,7 +140,7 @@ func NewMachineScope(params MachineScopeParams) (*MachineScope, error) {
 }
 
 // CreateMachine creates a vpc machine.
-func (m *MachineScope) CreateMachine() (*vpcv1.Instance, error) { //nolint: gocyclo
+func (m *MachineScope) CreateMachine() (*vpcv1.Instance, error) { //nolint:gocyclo
 	instanceReply, err := m.ensureInstanceUnique(m.IBMVPCMachine.Name)
 	if err != nil {
 		return nil, err
@@ -501,7 +501,7 @@ func (m *MachineScope) ensureInstanceUnique(instanceName string) (*vpcv1.Instanc
 		return true, "", nil
 	}
 
-	if err := utils.PagingHelper(f); err != nil {
+	if err := pkgUtils.PagingHelper(f); err != nil {
 		return nil, err
 	}
 
@@ -943,7 +943,7 @@ func fetchKeyID(key *infrav1.IBMVPCResourceReference, m *MachineScope) (*string,
 		return true, "", nil
 	}
 
-	if err := utils.PagingHelper(f); err != nil {
+	if err := pkgUtils.PagingHelper(f); err != nil {
 		return nil, err
 	}
 
@@ -1001,7 +1001,7 @@ func fetchImageID(image *infrav1.IBMVPCResourceReference, m *MachineScope) (*str
 		return true, "", nil
 	}
 
-	if err := utils.PagingHelper(f); err != nil {
+	if err := pkgUtils.PagingHelper(f); err != nil {
 		return nil, err
 	}
 
@@ -1087,7 +1087,7 @@ func (m *MachineScope) SetNotReady() {
 func (m *MachineScope) SetProviderID(id *string) error {
 	// Based on the ProviderIDFormat version the providerID format will be decided.
 	if options.ProviderIDFormatType(options.ProviderIDFormat) == options.ProviderIDFormatV2 {
-		accountID, err := utils.GetAccountIDWrapper()
+		accountID, err := pkgUtils.GetAccountIDWrapper()
 		if err != nil {
 			m.Logger.Error(err, "failed to get cloud account id", err.Error())
 			return err

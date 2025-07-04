@@ -32,7 +32,7 @@ import (
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/clients/powervs"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/options"
 	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/printer"
-	"sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/utils"
+	cliUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/cmd/capibmadm/utils"
 	pkgUtils "sigs.k8s.io/cluster-api-provider-ibmcloud/pkg/cloud/services/utils"
 )
 
@@ -83,14 +83,14 @@ func listimage(ctx context.Context) error {
 
 	for _, image := range images.Images {
 		imageToAppend := ImgSpec{
-			ImageID:        utils.DereferencePointer(image.ImageID).(string),
-			Name:           utils.DereferencePointer(image.Name).(string),
-			Description:    utils.DereferencePointer(image.Description).(string),
-			State:          utils.DereferencePointer(image.State).(string),
-			StoragePool:    utils.DereferencePointer(image.StoragePool).(string),
-			StorageType:    utils.DereferencePointer(image.StorageType).(string),
-			CreationDate:   utils.DereferencePointer(image.CreationDate).(strfmt.DateTime),
-			LastUpdateDate: utils.DereferencePointer(image.LastUpdateDate).(strfmt.DateTime),
+			ImageID:        cliUtils.DereferencePointer(image.ImageID).(string),
+			Name:           cliUtils.DereferencePointer(image.Name).(string),
+			Description:    cliUtils.DereferencePointer(image.Description).(string),
+			State:          cliUtils.DereferencePointer(image.State).(string),
+			StoragePool:    cliUtils.DereferencePointer(image.StoragePool).(string),
+			StorageType:    cliUtils.DereferencePointer(image.StorageType).(string),
+			CreationDate:   cliUtils.DereferencePointer(image.CreationDate).(strfmt.DateTime),
+			LastUpdateDate: cliUtils.DereferencePointer(image.LastUpdateDate).(strfmt.DateTime),
 		}
 		if image.Specifications != nil {
 			imageToAppend.Architecture = image.Specifications.Architecture
